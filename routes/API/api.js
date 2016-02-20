@@ -10,9 +10,17 @@ var streamer;
 
 router.get('/init', function (req, res) {
     streamer = new BCIstreamer(req.params.session, { verbose : false, save_db : false });
-    streamer.init( function (err) { console.log('Init error: ' + !err) } );
+    //streamer.init( function (err) { err ? console.log(err) : console.log('Initialized board.') });
+
+    // TODO: Should probably clean this up...
+    streamer.init( function (err) { err
+                                        ? streamer.connect('COM3', function (err) { err
+                                                                                        ? console.log(err)
+                                                                                        : console.log('Connected to COM3.') })
+                                        : console.log('Initialized board.')});
+    
     // Temp
-    streamer.start( function (err) { console.log('Start success: ' + err); } );
+    streamer.start( function (err) { err ? console.log(err) : console.log('Stream started.') });
 });
 
 router.get('/colors', function (req, res) {
