@@ -75,7 +75,7 @@ router.get('/:session/fft', function (req, res) {
         var samp_mat = math.transpose( math.matrix(channs) );
 
         //console.log(samp_mat._data[6]);
-        //sfft = simple_fft(samp_mat._data[0]);
+        sfft = simple_fft(samp_mat._data[0]);
         //console.log(sfft);
 
         res.json( { fft : sfft } );
