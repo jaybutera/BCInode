@@ -1,5 +1,5 @@
 {
-  "name": "mindMatters",
+  "name": "mind_matters",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -11,12 +11,30 @@
     "debug": "~2.2.0",
     "ejs": "~2.3.3",
     "express": "~4.13.1",
+    "express-session": "^1.13.0",
+    "fft": "^0.2.1",
+    "mathjs": "^2.7.0",
     "mongoose": "^4.3.6",
     "morgan": "~1.6.1",
     "ndarray": "^1.0.18",
+    "node-uuid": "^1.4.7",
     "openbci-sdk": "^0.2.0",
+    "passport": "^0.3.2",
     "passport-local-mongoose": "^4.0.0",
     "serve-favicon": "~2.3.0",
+    "stft": "0.0.0",
     "zeros": "^1.0.0"
-  }
+  },
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jaybutera/BCInode.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jaybutera/BCInode/issues"
+  },
+  "homepage": "https://github.com/jaybutera/BCInode#readme",
+  "description": ""
 }
