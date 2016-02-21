@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 // FFT
 var simple_fft = require('../lib/nodejs-simple-fft/simple-fft');
-var Stft = require('../lib/analysis/stft');
+//var Stft = require('../lib/analysis/stft');
 // OpenBCI serial module
 var BCIstreamer = require('../lib/openBCI');
 var streamer;
@@ -12,7 +12,11 @@ var math = require('mathjs');
 var Sample = require('../models/sample');
 var Session = require('../models/session');
 
+var a = require('./API/bci');
+
 var fs = require('fs');
+
+//var st = require('stacktrace-js');
 
 /*
 router.get('/new', function (req, res) {
@@ -28,17 +32,45 @@ router.get('/new', function (req, res) {
 */
 
 router.get('/:session/start', function (req, res) {
-    streamer = new BCIstreamer(req.params.session, { verbose : true, save_db : true });
-
+    streamer = new BCIstreamer(req.params.session, { verbose : false, save_db : true });
     // TODO: Should probably clean this up...
+    /*
     streamer.init( function (err) { err
                                         ? streamer.connect('COM3', function (err) { err
-                                                                                        ? console.log(err)
-                                                                                        : console.log('Connected to COM3.') })
-                                        : console.log('Initialized board.')});
-    
+                                                                                        ? console.log('chode')
+                                                                                        : initialized = true })
+                                        : initialized = true });
+    */
+    /*
+    streamer.init( function (err) {
+        if (err) {
+            streamer.connect('COM3', function (err) {
+                if (err) {
+                    console.log('chode')
+                } else {
+                    initialized = true;
+                    console.log('Initialized : ' + initialized);
+                }
+            });
+        } else
+            initialized = true;
+    });
+
     // Temp
-    streamer.start( function (err) { err ? console.log(err) : console.log('Stream started.') });
+    streamer.start( function (err) { err ? console.log(err) : streaming = true });
+    */
+
+    var api = new a(streamer);
+
+    console.log('Calling start');
+
+    api.start(function(err, status) {
+        if (err) {
+            console.log(err);
+        }
+        //st.fromError(err).then( sf => { console.log(sf); });
+        res.json(status);
+    });
 });
 
 router.get('/:session/stop', function (req, res) {
