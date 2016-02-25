@@ -1,11 +1,11 @@
 var express = require('express');
 var router = express.Router();
 //var Sample = require('../../models/sample');
-var stft = require('../../lib/analysis/stft');
-var nd_fft = require('../../lib/analysis/nd_fft');
-var simple_fft = require('../../lib/nodejs-simple-fft/simple-fft');
+var stft = require('../lib/analysis/stft');
+var nd_fft = require('../lib/analysis/nd_fft');
+var simple_fft = require('../lib/nodejs-simple-fft/simple-fft');
 var math = require('mathjs');
-var BCIstreamer = require('../../lib/openBCI');
+var BCIstreamer = require('../lib/openBCI');
 var streamer;
 
 router.get('/init', function (req, res) {

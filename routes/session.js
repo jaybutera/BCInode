@@ -12,7 +12,7 @@ var math = require('mathjs');
 var Sample = require('../models/sample');
 var Session = require('../models/session');
 
-var a = require('./API/bci');
+var api = new require('../lib/bci')({ verbose : false, save_db : true });;
 
 var fs = require('fs');
 
@@ -32,43 +32,15 @@ router.get('/new', function (req, res) {
 */
 
 router.get('/:session/start', function (req, res) {
-    streamer = new BCIstreamer(req.params.session, { verbose : false, save_db : true });
-    // TODO: Should probably clean this up...
-    /*
-    streamer.init( function (err) { err
-                                        ? streamer.connect('COM3', function (err) { err
-                                                                                        ? console.log('chode')
-                                                                                        : initialized = true })
-                                        : initialized = true });
-    */
-    /*
-    streamer.init( function (err) {
-        if (err) {
-            streamer.connect('COM3', function (err) {
-                if (err) {
-                    console.log('chode')
-                } else {
-                    initialized = true;
-                    console.log('Initialized : ' + initialized);
-                }
-            });
-        } else
-            initialized = true;
-    });
+    //streamer = new BCIstreamer(req.params.session, { verbose : false, save_db : true });
 
-    // Temp
-    streamer.start( function (err) { err ? console.log(err) : streaming = true });
-    */
+    //var api = new a(streamer);
 
-    var api = new a(streamer);
-
-    console.log('Calling start');
-
-    api.start(function(err, status) {
+    api.start( function(err, status) {
         if (err) {
             console.log(err);
         }
-        //st.fromError(err).then( sf => { console.log(sf); });
+
         res.json(status);
     });
 });

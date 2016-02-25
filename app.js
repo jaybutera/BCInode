@@ -48,7 +48,7 @@ passport.deserializeUser(User.deserializeUser());
 var routes = require('./routes/index');
 var plan = require('./routes/plan');
 var auth = require('./routes/auth')(passport);
-var api = require('./routes/API/api');
+var api = require('./routes/api');
 var session = require('./routes/session');
 
 app.use('/', routes);
