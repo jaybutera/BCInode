@@ -4,7 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var session = require('express-session');      // Session cookies
+var session = require('express-session');     // Session cookies
 var User = require('./models/user');
 var mongoose = require('mongoose');           // Mongodb API
 var uuid = require('node-uuid');              // Generate session uuid
@@ -29,10 +29,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Init session cookie
 app.use(session({
-      genid: function(req) {
-                     return uuid.v1(); // Use uuid for session IDs
-      },
-      secret: '123testies'
+    genid: function(req) {
+        return uuid.v1(); // Use uuid for session IDs
+    },
+    secret: '123testies'
 }));
 
 // Configure passport module
@@ -42,7 +42,7 @@ app.use(passport.session());
 passport.use(User.createStrategy());
 
 passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+passport.deserializeUser(User.deserializeUser));
 //
 
 var routes = require('./routes/index');

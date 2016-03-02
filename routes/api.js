@@ -18,25 +18,9 @@ router.get('/init', function (req, res) {
                                                                                         ? console.log(err)
                                                                                         : console.log('Connected to COM3.') })
                                         : console.log('Initialized board.')});
-    
+
     // Temp
     streamer.start( function (err) { err ? console.log(err) : console.log('Stream started.') });
-});
-
-router.get('/colors', function (req, res) {
-    /*
-    streamer.init(function (succ) {
-        console.log('Init status: ' + succ);
-    });
-    */
-
-    /*
-    setTimeout (function () {
-        streamer.start();
-    }, 2000);
-    */
-
-    //streamer.run();
 });
 
 router.get('/done', function (req, res) {

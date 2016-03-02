@@ -36,5 +36,9 @@
     "url": "https://github.com/jaybutera/BCInode/issues"
   },
   "homepage": "https://github.com/jaybutera/BCInode#readme",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-as-promised": "^5.2.0"
+  }
 }
