@@ -4,15 +4,15 @@ var router = express.Router();
 var simple_fft = require('../lib/nodejs-simple-fft/simple-fft');
 //var Stft = require('../lib/analysis/stft');
 // OpenBCI serial module
-var BCIstreamer = require('../lib/openBCI');
-var streamer;
+//var BCIstreamer = require('../lib/openBCI');
+//var streamer;
 // Matrix module
 var math = require('mathjs');
 // Models
 var Sample = require('../models/sample');
 var Session = require('../models/session');
 
-var api = new require('../lib/bci')({ verbose : false, save_db : true });;
+//var api = new require('../lib/bci')({ verbose : false, save_db : true });;
 
 var fs = require('fs');
 
@@ -36,6 +36,7 @@ router.get('/:session/start', function (req, res) {
 
     //var api = new a(streamer);
 
+    /*
     api.start( function(err, status) {
         if (err) {
             console.log(err);
@@ -43,10 +44,11 @@ router.get('/:session/start', function (req, res) {
 
         res.json(status);
     });
+    */
 });
 
 router.get('/:session/stop', function (req, res) {
-    streamer.stop();
+    //streamer.stop();
 });
 
 router.get('/:session/new_fft', function (req, res) {

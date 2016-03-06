@@ -5,10 +5,24 @@ var stft = require('../lib/analysis/stft');
 var nd_fft = require('../lib/analysis/nd_fft');
 var simple_fft = require('../lib/nodejs-simple-fft/simple-fft');
 var math = require('mathjs');
-var BCIstreamer = require('../lib/openBCI');
-var streamer;
+var bci = require('../lib/bci/bciFactory').createOpenBCI({ verbose : false, save_db : false });
+//var BCIstreamer = require('../lib/openBCI');
+//var streamer;
 
 router.get('/init', function (req, res) {
+    bci.connect().then( function () {
+        console.log('Successful connection to bci board.');
+        res.json(null);
+    }).catch( err => {
+        console.log(err);
+        res.json(err);
+    });
+    /*
+    bci.init( function (err) {
+        console.log(err);
+    });
+    */
+    /*
     streamer = new BCIstreamer(req.params.session, { verbose : false, save_db : false });
     //streamer.init( function (err) { err ? console.log(err) : console.log('Initialized board.') });
 
@@ -21,10 +35,17 @@ router.get('/init', function (req, res) {
 
     // Temp
     streamer.start( function (err) { err ? console.log(err) : console.log('Stream started.') });
+    */
+});
+
+router.get('/start', function (req, res) {
+    bci.start( function (err) {
+        console.log(err);
+    });
 });
 
 router.get('/done', function (req, res) {
-    streamer.stop();
+    bci.close();
 });
 
 router.post('/test/impedance', function (req, res) {
