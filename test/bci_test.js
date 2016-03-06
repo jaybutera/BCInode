@@ -12,6 +12,7 @@ var openBCI = require('../lib/bci/bciFactory')
                     save : false,
                 });
 
+/*
 var openBCIsim = require('../lib/bci/bciFactory')
                 .createOpenBCI({
                     verbose : false,
@@ -26,6 +27,7 @@ describe('Stream (simulate)', function() {
         });
     });
 });
+*/
 
 describe('Stream', function() {
     describe('init', function () {
