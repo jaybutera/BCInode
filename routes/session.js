@@ -3,20 +3,20 @@ var router = express.Router();
 // FFT
 var simple_fft = require('../lib/nodejs-simple-fft/simple-fft');
 //var Stft = require('../lib/analysis/stft');
-// OpenBCI serial module
-//var BCIstreamer = require('../lib/openBCI');
-//var streamer;
 // Matrix module
 var math = require('mathjs');
 // Models
-var Sample = require('../models/sample');
+//var Sample = require('../lib/middleware/db/schemas').sample;
 var Session = require('../models/session');
+var bci = require('../lib/middleware/bciControl').bci(
+        { verbose : false,
+          save_db : true,
+          bci : 'openBCI',
+        });
 
 //var api = new require('../lib/bci')({ verbose : false, save_db : true });;
 
 var fs = require('fs');
-
-//var st = require('stacktrace-js');
 
 /*
 router.get('/new', function (req, res) {
@@ -31,27 +31,39 @@ router.get('/new', function (req, res) {
 });
 */
 
+// Start raw data streaming session
 router.get('/:session/start', function (req, res) {
-    //streamer = new BCIstreamer(req.params.session, { verbose : false, save_db : true });
+    var stat = {
+        'streaming' : false,
+        'error' : null,
+    };
 
-    //var api = new a(streamer);
-
-    /*
-    api.start( function(err, status) {
-        if (err) {
-            console.log(err);
-        }
-
-        res.json(status);
-    });
-    */
+    bci.stream()
+        .then( function () {
+            stat['streaming'] = true;
+            return res.json(stat);
+        })
+        .catch( err => {
+            stat['error'] = err;
+            return res.json(stat);
+        });
 });
 
 router.get('/:session/stop', function (req, res) {
-    //streamer.stop();
-});
+    var stat = {
+        'stopped' : false,
+        'error' : null,
+    };
 
-router.get('/:session/new_fft', function (req, res) {
+    bci.stop()
+       .then( function () {
+           stat['stopped'] = true;
+           return res.json(stat);
+       })
+       .catch( err => {
+           stat['error'] = err;
+           return res.json(stat);
+       });
 });
 
 router.get('/:session/fft', function (req, res) {

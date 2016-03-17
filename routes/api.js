@@ -5,49 +5,72 @@ var stft = require('../lib/analysis/stft');
 var nd_fft = require('../lib/analysis/nd_fft');
 var simple_fft = require('../lib/nodejs-simple-fft/simple-fft');
 var math = require('mathjs');
-var bci = require('../lib/bci/bciFactory').createOpenBCI({ verbose : false, save_db : false });
-//var BCIstreamer = require('../lib/openBCI');
-//var streamer;
+var bci = require('../lib/middleware/bciControl').bci(
+        { verbose : false,
+          save_db : false,
+          bci : 'openBCI',
+        });
 
+// Initialize bci board
 router.get('/init', function (req, res) {
-    bci.connect().then( function () {
-        console.log('Successful connection to bci board.');
-        res.json(null);
-    }).catch( err => {
-        console.log(err);
-        res.json(err);
-    });
-    /*
-    bci.init( function (err) {
-        console.log(err);
-    });
-    */
-    /*
-    streamer = new BCIstreamer(req.params.session, { verbose : false, save_db : false });
-    //streamer.init( function (err) { err ? console.log(err) : console.log('Initialized board.') });
+    var stat = {
+        'initialized' : false,
+        'error' : null,
+    };
 
-    // TODO: Should probably clean this up...
-    streamer.init( function (err) { err
-                                        ? streamer.connect('COM3', function (err) { err
-                                                                                        ? console.log(err)
-                                                                                        : console.log('Connected to COM3.') })
-                                        : console.log('Initialized board.')});
-
-    // Temp
-    streamer.start( function (err) { err ? console.log(err) : console.log('Stream started.') });
-    */
+    bci.init()
+        .then( function () {
+            stat['initialized'] = true;
+            return res.json(stat);
+        })
+        .catch( err => {
+            stat['error'] = err;
+            return res.json(stat);
+        });
 });
 
+// Stream raw data from bci board
 router.get('/start', function (req, res) {
-    bci.start( function (err) {
-        console.log(err);
-    });
+    var stat = {
+        'streaming' : false,
+        'error' : null,
+    };
+
+    bci.stream()
+        .then( function () {
+            stat['streaming'] = true;
+            return res.json(stat);
+        })
+        .catch( err => {
+            stat['error'] = err;
+            return res.json(stat);
+        });
 });
 
-router.get('/done', function (req, res) {
+// Stop bci raw data stream
+router.get('/stop', function (req, res) {
+    var stat = {
+        'stopped' : false,
+        'error' : null,
+    };
+
+    bci.stop()
+        .then( function () {
+            stat['stopped'] = true;
+            return res.json(stat);
+        })
+        .catch( err => {
+            stat['error'] = err;
+            return res.json(stat);
+        });
+});
+
+// Close serial connection to bci board
+router.get('/close', function (req, res) {
     bci.close();
 });
 
+// Test electrode impedance on bci given channel specification array.
 router.post('/test/impedance', function (req, res) {
     var test_prof = req.body['channels'];
     streamer.testImped(test_prof, function (err, impedObj) {
